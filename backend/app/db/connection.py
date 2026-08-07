@@ -2,10 +2,7 @@
 On-prem SQL Server connection layer.
 
 Nothing here runs until app.config.settings.db_configured is True.
-Fill in DB_SERVER / DB_NAME in your .env, then either:
-  - set DB_USE_WINDOWS_AUTH=true to connect as whatever account is running
-    this process (typical for a dev box on a domain-joined machine), or
-  - set DB_USER / DB_PASSWORD for a SQL login.
+Fill in DATABASE_URL in your .env.
 This module will lazily create a pooled SQLAlchemy engine on first use.
 
 Whichever auth method you use, the underlying account should be
@@ -33,9 +30,8 @@ def get_engine() -> Engine:
     global _engine
     if not settings.db_configured:
         raise DatabaseNotConfiguredError(
-            "DB connection not configured yet. Set DB_SERVER, DB_NAME in your "
-            ".env file, plus either DB_USE_WINDOWS_AUTH=true, or DB_USER / "
-            "DB_PASSWORD for a SQL login."
+            "DB connection not configured yet. Set DATABASE_URL in your "
+            ".env file."
         )
     if _engine is None:
         _engine = create_engine(
