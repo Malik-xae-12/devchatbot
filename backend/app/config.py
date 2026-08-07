@@ -15,20 +15,8 @@ class Settings(BaseSettings):
     domain_description: str = "our project and resource usage database"
     example_questions: str = "\"which projects are over budget\", \"how many hours does Priya have remaining this month\""
 
-    # --- On-prem SQL Server (fill these in later) ---
-    db_server: str = ""          # e.g. "SQLPROD01" or "10.0.0.5,1433"
-    db_name: str = ""
-    # Set true to use Windows Authentication (Trusted_Connection) instead of
-    # a SQL login — typical for a dev box where you're already domain-joined
-    # and have been granted read access under your own Windows account.
-    # When true, db_user/db_password are ignored.
-    db_use_windows_auth: bool = False
-    db_user: str = ""
-    db_password: str = ""
-    db_driver: str = "ODBC Driver 18 for SQL Server"
-    db_encrypt: bool = True
-    db_trust_server_certificate: bool = False
-    db_read_only: bool = True
+    # --- On-prem SQL Server ---
+    database_url: str = ""       # e.g. "mssql+pymssql://user:pass@server/db"
 
     # --- Query safety ---
     max_rows_returned: int = 200
@@ -45,28 +33,11 @@ class Settings(BaseSettings):
 
     @property
     def db_configured(self) -> bool:
-        if self.db_use_windows_auth:
-            return bool(self.db_server and self.db_name)
-        return bool(self.db_server and self.db_name and self.db_user)
+        return bool(self.database_url)
 
     @property
     def sqlalchemy_url(self) -> str:
-        import urllib.parse
-        driver_encoded = self.db_driver.replace(" ", "+")
-        password_encoded = urllib.parse.quote_plus(self.db_password) if self.db_password else ""
-        if self.db_use_windows_auth:
-            return (
-                f"mssql+pyodbc://@{self.db_server}/{self.db_name}?driver={driver_encoded}"
-                f"&trusted_connection=yes"
-                f"&Encrypt={'yes' if self.db_encrypt else 'no'}"
-                f"&TrustServerCertificate={'yes' if self.db_trust_server_certificate else 'no'}"
-            )
-        return (
-            f"mssql+pyodbc://{self.db_user}:{password_encoded}"
-            f"@{self.db_server}/{self.db_name}?driver={driver_encoded}"
-            f"&Encrypt={'yes' if self.db_encrypt else 'no'}"
-            f"&TrustServerCertificate={'yes' if self.db_trust_server_certificate else 'no'}"
-        )
+        return self.database_url
 
 
 settings = Settings()
