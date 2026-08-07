@@ -21,7 +21,7 @@ export interface HealthResponse {
 const API_BASE = import.meta.env.VITE_API_BASE || '';
 
 export async function sendMessage(message: string): Promise<ChatResponse> {
-  const res = await fetch(`${API_BASE}/api/chat`, {
+  const res = await fetch(`${API_BASE}/api/chat?t=${new Date().getTime()}`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ message }),
@@ -33,7 +33,9 @@ export async function sendMessage(message: string): Promise<ChatResponse> {
 }
 
 export async function checkHealth(): Promise<HealthResponse> {
-  const res = await fetch(`${API_BASE}/api/health`)
+  const res = await fetch(`${API_BASE}/api/health?t=${new Date().getTime()}`, {
+    mode: 'cors'
+  })
   if (!res.ok) {
     throw new Error(`Health check failed: ${res.status}`)
   }
