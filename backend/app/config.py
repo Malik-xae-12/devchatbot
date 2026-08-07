@@ -14,6 +14,7 @@ class Settings(BaseSettings):
     app_name: str = "DB Assistant"
     domain_description: str = "our project and resource usage database"
     example_questions: str = "\"which projects are over budget\", \"how many hours does Priya have remaining this month\""
+    cors_origins: str = "http://localhost:5173"
 
     # --- On-prem SQL Server (fill these in later) ---
     database_url: str = ""
