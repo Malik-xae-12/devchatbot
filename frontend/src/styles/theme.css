@@ -1,0 +1,80 @@
+:root {
+  /* Color tokens — cool teal/blue, light surface */
+  --bg: #EFF6F7;
+  --bg-gradient: linear-gradient(180deg, #F4FAFB 0%, #E7F2F4 100%);
+  --surface: #FFFFFF;
+  --surface-raised: #FFFFFF;
+
+  --teal-700: #0B6E68;
+  --teal-600: #0E8F86;
+  --teal-500: #14A89C;
+  --teal-100: #D8F0EC;
+
+  --blue-600: #2B6CB0;
+  --blue-500: #3E8ED0;
+  --blue-100: #DCEBFA;
+
+  --ink: #0C2B31;
+  --ink-soft: #4A6A70;
+  --ink-faint: #8CA6AB;
+
+  --border: #D3E6E6;
+  --border-soft: #E4F0F0;
+
+  --danger: #B45252;
+
+  /* Type */
+  --font-display: 'Space Grotesk', sans-serif;
+  --font-body: 'Inter', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  --radius-lg: 18px;
+  --radius-md: 12px;
+  --radius-sm: 8px;
+
+  --shadow-soft: 0 2px 12px rgba(11, 110, 104, 0.08);
+  --shadow-raised: 0 6px 24px rgba(11, 110, 104, 0.12);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--bg-gradient);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+}
+
+button {
+  font-family: var(--font-body);
+}
+
+::selection {
+  background: var(--teal-100);
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 8px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--ink-faint);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
