@@ -64,4 +64,3 @@ jobs:
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_API }}
           package: .
-          startup-command: 'bash startup.sh'
