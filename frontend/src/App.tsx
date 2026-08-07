@@ -77,6 +77,8 @@ export default function App() {
                 text: res.reply,
                 sql: res.sql,
                 rowCount: res.row_count,
+                exportId: res.export_id,
+                exportRowCount: res.export_row_count,
                 intent: res.intent,
                 status: 'done',
               }

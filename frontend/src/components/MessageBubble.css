@@ -34,9 +34,109 @@
   border-bottom-left-radius: 4px;
 }
 
+.bubble-row.from-assistant .bubble {
+  max-width: 86%;
+}
+
 .bubble-text {
   margin: 0;
   white-space: pre-wrap;
+}
+
+/* --- Markdown rendering for assistant replies --- */
+.bubble-markdown {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.md-p {
+  margin: 0;
+  white-space: pre-wrap;
+}
+
+.md-p strong {
+  color: var(--teal-700);
+}
+
+.md-list {
+  margin: 0;
+  padding-left: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.md-list strong {
+  color: var(--teal-700);
+}
+
+.md-table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  margin: 2px 0;
+}
+
+.md-table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 13.5px;
+}
+
+.md-table thead tr {
+  background: linear-gradient(135deg, var(--teal-600), var(--teal-500));
+}
+
+.md-table th {
+  text-align: left;
+  padding: 8px 12px;
+  color: #F4FBFA;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.md-table td {
+  padding: 7px 12px;
+  border-top: 1px solid var(--border-soft);
+  white-space: nowrap;
+}
+
+.md-table tbody tr:nth-child(odd) {
+  background: var(--teal-100);
+  background: color-mix(in srgb, var(--teal-100) 40%, transparent);
+}
+
+.md-table tbody tr:hover {
+  background: var(--teal-100);
+}
+
+/* --- Excel export action --- */
+.export-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  align-self: flex-start;
+  margin-top: 2px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, var(--teal-600), var(--blue-600));
+  color: #F4FBFA;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  box-shadow: var(--shadow-soft);
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+
+.export-action:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-raised);
+}
+
+.export-icon {
+  display: inline-flex;
+  color: #F4FBFA;
 }
 
 /* Signature element: query trace strip */

@@ -3,6 +3,12 @@ export interface ChatResponse {
   intent: 'db_query' | 'off_topic'
   sql?: string | null
   row_count?: number | null
+  export_id?: string | null
+  export_row_count?: number | null
+}
+
+export function exportUrl(exportId: string): string {
+  return `/api/export/${exportId}`
 }
 
 export interface HealthResponse {
@@ -11,10 +17,8 @@ export interface HealthResponse {
   schema_loaded: boolean
 }
 
-const API_BASE = import.meta.env.VITE_API_BASE || '/api'
-
 export async function sendMessage(message: string): Promise<ChatResponse> {
-  const res = await fetch(`${API_BASE}/chat`, {
+  const res = await fetch('/api/chat', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ message }),
@@ -26,7 +30,7 @@ export async function sendMessage(message: string): Promise<ChatResponse> {
 }
 
 export async function checkHealth(): Promise<HealthResponse> {
-  const res = await fetch(`${API_BASE}/health`)
+  const res = await fetch('/api/health')
   if (!res.ok) {
     throw new Error(`Health check failed: ${res.status}`)
   }

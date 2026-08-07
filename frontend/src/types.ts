@@ -4,6 +4,8 @@ export interface Message {
   text: string
   sql?: string | null
   rowCount?: number | null
+  exportId?: string | null
+  exportRowCount?: number | null
   intent?: 'db_query' | 'off_topic'
   status?: 'pending' | 'done' | 'error'
 }

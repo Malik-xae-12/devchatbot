@@ -1,1 +1,1 @@
-{"root":["./src/App.tsx","./src/api.ts","./src/main.tsx","./src/types.ts","./src/components/InputBar.tsx","./src/components/MessageBubble.tsx","./src/components/StatusPill.tsx"],"version":"5.9.3"}
+{"root":["./src/app.tsx","./src/api.ts","./src/main.tsx","./src/sessions.ts","./src/types.ts","./src/components/chathistorypanel.tsx","./src/components/inputbar.tsx","./src/components/messagebubble.tsx","./src/components/statuspill.tsx"],"version":"5.9.3"}

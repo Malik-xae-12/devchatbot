@@ -3,14 +3,16 @@ from __future__ import annotations
 import logging
 
 from app.agents.query_rewriter import inline_virtual_views
-from app.agents.response_formatter import build_clarification, format_response
+from app.agents.response_formatter import build_clarification, format_response, format_summary
 from app.agents.router import QueryIntent, classify_intent, off_topic_reply
 from app.agents.sql_generator import generate_sql
 from app.agents.sql_validator import UnsafeQueryError, validate_sql
 from app.agents.table_selector import select_tables
+from app.config import settings
 from app.db.connection import DatabaseNotConfiguredError, run_query
 from app.db.schema_catalog import ensure_catalog_loaded
 from app.models.chat import ChatResponse
+from app.services.export_cache import export_cache
 
 logger = logging.getLogger("chat_orchestrator")
 
@@ -73,7 +75,20 @@ async def handle_message(message: str) -> ChatResponse:
             row_count=0,
         )
 
-    answer = await format_response(message, rows)
+    row_count = len(rows)
+    export_id: str | None = None
+    export_row_count: int | None = None
+
+    if row_count > settings.excel_export_row_threshold:
+        answer = await format_summary(message, rows, row_count)
+        export_id = export_cache.store(rows, message)
+        export_row_count = row_count
+        answer = (
+            f"{answer}\n\nThat's **{row_count} rows** in total — more than fits comfortably "
+            "here. Want the full details? Download the complete result as an Excel file below."
+        )
+    else:
+        answer = await format_response(message, rows)
 
     if low_confidence:
         answer = f"{answer}\n\n{build_clarification(selection.tables, message)}"
@@ -82,5 +97,7 @@ async def handle_message(message: str) -> ChatResponse:
         reply=answer,
         intent=intent.value,
         sql=sql,
-        row_count=len(rows),
+        row_count=row_count,
+        export_id=export_id,
+        export_row_count=export_row_count,
     )
