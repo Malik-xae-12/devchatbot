@@ -11,8 +11,10 @@ export interface HealthResponse {
   schema_loaded: boolean
 }
 
+const API_BASE = import.meta.env.VITE_API_BASE || '/api'
+
 export async function sendMessage(message: string): Promise<ChatResponse> {
-  const res = await fetch('/api/chat', {
+  const res = await fetch(`${API_BASE}/chat`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ message }),
@@ -24,7 +26,7 @@ export async function sendMessage(message: string): Promise<ChatResponse> {
 }
 
 export async function checkHealth(): Promise<HealthResponse> {
-  const res = await fetch('/api/health')
+  const res = await fetch(`${API_BASE}/health`)
   if (!res.ok) {
     throw new Error(`Health check failed: ${res.status}`)
   }

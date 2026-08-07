@@ -40,6 +40,9 @@ class Settings(BaseSettings):
     azure_openai_deployment: str = "gpt-4o"  # the *deployment name* in Foundry, not the base model name
     azure_openai_api_version: str = "2024-10-21"
 
+    # --- CORS ---
+    cors_origins: str = "http://localhost:5173"
+
     @property
     def db_configured(self) -> bool:
         if self.db_use_windows_auth:
@@ -48,7 +51,9 @@ class Settings(BaseSettings):
 
     @property
     def sqlalchemy_url(self) -> str:
+        import urllib.parse
         driver_encoded = self.db_driver.replace(" ", "+")
+        password_encoded = urllib.parse.quote_plus(self.db_password) if self.db_password else ""
         if self.db_use_windows_auth:
             return (
                 f"mssql+pyodbc://@{self.db_server}/{self.db_name}?driver={driver_encoded}"
@@ -57,7 +62,7 @@ class Settings(BaseSettings):
                 f"&TrustServerCertificate={'yes' if self.db_trust_server_certificate else 'no'}"
             )
         return (
-            f"mssql+pyodbc://{self.db_user}:{self.db_password}"
+            f"mssql+pyodbc://{self.db_user}:{password_encoded}"
             f"@{self.db_server}/{self.db_name}?driver={driver_encoded}"
             f"&Encrypt={'yes' if self.db_encrypt else 'no'}"
             f"&TrustServerCertificate={'yes' if self.db_trust_server_certificate else 'no'}"
